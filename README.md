@@ -14,9 +14,21 @@ A personal systems-engineering monorepo of small, self-contained building blocks
 | :--- | :--- |
 | [AGENTS.md](AGENTS.md) | Canonical rules for AI coding harnesses (zero code generation, deep plain-language specs, 5-axis adversarial review). |
 | [CLAUDE.md](CLAUDE.md) | Import shim (`@AGENTS.md`) for Claude Code compatibility. |
+| [CMakeLists.txt](CMakeLists.txt) | Root C++23 + `import std;` CMake build (`syskit::warnings` + `projects/*` discovery). |
+| [CMakePresets.json](CMakePresets.json) | Clang 21 presets (`debug`, `release`, `asan`, `tsan`). |
+| [.clang-tidy](.clang-tidy) / [.clang-format](.clang-format) | C++23 module-aware static analysis and formatting configuration. |
 | [scripts/setup-ubuntu.sh](scripts/setup-ubuntu.sh) | Idempotent Ubuntu / WSL2 environment bootstrap (C++, sanitizers, Python/`uv`, `gh`). |
 | [templates/TRACKER.md](templates/TRACKER.md) | Standard progress, critique, and verification tracker copied into each subproject. |
 | `projects/<slug>/` | Individual self-contained subprojects, each with its own `TRACKER.md`. |
+
+## C++23 Toolchain Usage
+
+```bash
+cmake --preset debug && cmake --build --preset debug && ctest --preset debug
+clang-tidy -p build/debug projects/<slug>/**/*.cpp projects/<slug>/**/*.cppm
+cmake --preset asan  && cmake --build --preset asan  && ctest --preset asan
+cmake --preset tsan  && cmake --build --preset tsan  && ctest --preset tsan
+```
 
 ## Subprojects
 

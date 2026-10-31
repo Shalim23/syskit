@@ -1,0 +1,88 @@
+{
+  "version": 10,
+  "cmakeMinimumRequired": { "major": 4, "minor": 2, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": ".base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_EXE_LINKER_FLAGS": "-fuse-ld=lld",
+        "CMAKE_SHARED_LINKER_FLAGS": "-fuse-ld=lld"
+      }
+    },
+    {
+      "name": "debug",
+      "displayName": "Debug",
+      "inherits": ".base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_FLAGS": "-D_GLIBCXX_ASSERTIONS -fno-omit-frame-pointer"
+      }
+    },
+    {
+      "name": "release",
+      "displayName": "Release",
+      "inherits": ".base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "asan",
+      "displayName": "ASan + UBSan",
+      "inherits": ".base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_FLAGS": "-O1 -fno-omit-frame-pointer -D_GLIBCXX_ASSERTIONS -fsanitize=address,undefined -fno-sanitize-recover=all",
+        "CMAKE_EXE_LINKER_FLAGS": "-fuse-ld=lld -fsanitize=address,undefined -fno-sanitize-recover=all",
+        "CMAKE_SHARED_LINKER_FLAGS": "-fuse-ld=lld -fsanitize=address,undefined -fno-sanitize-recover=all"
+      }
+    },
+    {
+      "name": "tsan",
+      "displayName": "TSan",
+      "inherits": ".base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_FLAGS": "-O1 -fno-omit-frame-pointer -fsanitize=thread -fno-sanitize-recover=all",
+        "CMAKE_EXE_LINKER_FLAGS": "-fuse-ld=lld -fsanitize=thread -fno-sanitize-recover=all",
+        "CMAKE_SHARED_LINKER_FLAGS": "-fuse-ld=lld -fsanitize=thread -fno-sanitize-recover=all"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "debug", "configurePreset": "debug" },
+    { "name": "release", "configurePreset": "release" },
+    { "name": "asan", "configurePreset": "asan" },
+    { "name": "tsan", "configurePreset": "tsan" }
+  ],
+  "testPresets": [
+    {
+      "name": ".test-base",
+      "hidden": true,
+      "output": { "outputOnFailure": true }
+    },
+    { "name": "debug", "configurePreset": "debug", "inherits": ".test-base" },
+    { "name": "release", "configurePreset": "release", "inherits": ".test-base" },
+    {
+      "name": "asan",
+      "configurePreset": "asan",
+      "inherits": ".test-base",
+      "environment": {
+        "ASAN_OPTIONS": "strict_string_checks=1:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1:detect_leaks=1",
+        "UBSAN_OPTIONS": "print_stacktrace=1:halt_on_error=1"
+      }
+    },
+    {
+      "name": "tsan",
+      "configurePreset": "tsan",
+      "inherits": ".test-base",
+      "environment": {
+        "TSAN_OPTIONS": "halt_on_error=1:second_deadlock_stack=1"
+      }
+    }
+  ]
+}
