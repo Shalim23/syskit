@@ -42,6 +42,8 @@ ${SUDO} DEBIAN_FRONTEND=noninteractive apt-get install -y \
     clang \
     clang-format \
     clang-tidy \
+    clang-tools \
+    clangd \
     cmake \
     curl \
     gdb \
@@ -89,22 +91,29 @@ if [[ -n "${WSL_DISTRO_NAME:-}" ]] && [[ "${CI:-}" != "true" ]]; then
     fi
 fi
 
-echo "==> Verifying toolchain & Clang C++23 sanitizer link check..."
+echo "==> Verifying toolchain, C++23 module scanner, & sanitizer link check..."
+command -v clang-scan-deps >/dev/null 2>&1
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "${TMP_DIR}"' EXIT
 printf 'int main() { return 0; }\n' > "${TMP_DIR}/probe.cpp"
 clang++ -std=c++23 -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined "${TMP_DIR}/probe.cpp" -o "${TMP_DIR}/probe"
 "${TMP_DIR}/probe"
+if [[ -f "${REPO_ROOT}/CMakeLists.txt" ]]; then
+    CXX=clang++ cmake -G Ninja -S "${REPO_ROOT}" -B "${TMP_DIR}/cmake-probe" >/dev/null
+fi
 
 echo ""
 echo "Toolchain ready:"
-printf "  clang++      : %s\n" "$(clang++ --version | head -n 1)"
-printf "  g++          : %s\n" "$(g++ --version | head -n 1)"
-printf "  cmake        : %s\n" "$(cmake --version | head -n 1)"
-printf "  ninja        : %s\n" "$(ninja --version)"
-printf "  python3      : %s\n" "$(python3 --version)"
-printf "  uv           : %s\n" "$(uv --version)"
-printf "  gh           : %s\n" "$(gh --version | head -n 1)"
+printf "  clang++         : %s\n" "$(clang++ --version | head -n 1)"
+printf "  clang-tidy      : %s\n" "$(clang-tidy --version | head -n 1)"
+printf "  clang-scan-deps : %s\n" "$(command -v clang-scan-deps)"
+printf "  g++             : %s\n" "$(g++ --version | head -n 1)"
+printf "  cmake           : %s\n" "$(cmake --version | head -n 1)"
+printf "  ninja           : %s\n" "$(ninja --version)"
+printf "  python3         : %s\n" "$(python3 --version)"
+printf "  uv              : %s\n" "$(uv --version)"
+printf "  gh              : %s\n" "$(gh --version | head -n 1)"
 
 if [[ "${CI:-}" != "true" ]] && ! gh auth status >/dev/null 2>&1; then
     echo ""

@@ -6,6 +6,11 @@ out/
 cmake-build-*/
 CMakeUserPresets.json
 compile_commands.json
+gcm.cache/
+*.pcm
+*.gcm
+*.bmi
+*.ifc
 *.o
 *.obj
 *.exe
@@ -39,6 +44,7 @@ dist/
 htmlcov/
 
 # IDE & Editors
+.cache/
 .vscode/
 .idea/
 .vs/
