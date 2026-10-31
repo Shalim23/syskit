@@ -14,7 +14,7 @@ The sole purpose of `syskit` is deliberate, hands-on engineering mastery. The us
 - **Chat output ban:** Never output target-language implementation, test, or benchmark code in chat — no function bodies, no 1-line bug fixes, no test cases, and no copy-pasteable class/struct definitions.
 - **File-write allowlist:** Agents may create or edit **only**:
   - Documentation & tracking files: `README.md`, `AGENTS.md`, `CLAUDE.md`, `templates/*.md`, `projects/*/TRACKER.md`, `projects/*/README.md`, `projects/*/AGENTS.md`.
-  - Build, repo, or tooling boilerplate (`CMakeLists.txt`, `CMakePresets.json`, `pyproject.toml`, `.gitignore`, `.clang-format`, `.clang-tidy`, `.github/**`) **only when explicitly requested** by the user.
+  - Build, repo, or tooling boilerplate (`CMakeLists.txt`, `CMakePresets.json`, `pyproject.toml`, `.gitignore`, `.gitattributes`, `.clang-format`, `.clang-tidy`, `scripts/**`, `.github/**`) **only when explicitly requested** by the user.
 - **Source & test file ban:** Never create or edit source, header, test, or benchmark files (`*.cpp`, `*.hpp`, `*.h`, `*.cc`, `*.c`, `*.py`, `*.rs`, etc.) unless the user gives an explicit one-off override in the current prompt. Any override expires at the end of that single turn.
 
 ## 2. Task Specification Standard (Deep Plain Language, Zero Code)

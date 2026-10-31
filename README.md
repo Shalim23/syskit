@@ -14,6 +14,7 @@ A personal systems-engineering monorepo of small, self-contained building blocks
 | :--- | :--- |
 | [AGENTS.md](AGENTS.md) | Canonical rules for AI coding harnesses (zero code generation, deep plain-language specs, 5-axis adversarial review). |
 | [CLAUDE.md](CLAUDE.md) | Import shim (`@AGENTS.md`) for Claude Code compatibility. |
+| [scripts/setup-ubuntu.sh](scripts/setup-ubuntu.sh) | Idempotent Ubuntu / WSL2 environment bootstrap (C++, sanitizers, Python/`uv`, `gh`). |
 | [templates/TRACKER.md](templates/TRACKER.md) | Standard progress, critique, and verification tracker copied into each subproject. |
 | `projects/<slug>/` | Individual self-contained subprojects, each with its own `TRACKER.md`. |
 
