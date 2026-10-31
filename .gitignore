@@ -1,0 +1,55 @@
+# Local Session Context
+SESSION_CONTEXT.md
+
+# C++ Build & Tooling
+build/
+bin/
+lib/
+out/
+cmake-build-*/
+CMakeUserPresets.json
+compile_commands.json
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+*.pdb
+*.ilk
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+dist/
+*.egg-info/
+.eggs/
+
+# Testing & Quality
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+.coverage.*
+htmlcov/
+
+# IDE & Editors
+.vscode/
+.idea/
+.vs/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
